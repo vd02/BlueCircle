@@ -22,7 +22,7 @@ router.get("/get-all-doctors", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/get-all-users", authMiddleware, async (req, res) => {
+router.get("/obtain-total-users", authMiddleware, async (req, res) => {
   try {
     const users = await User.find({});
     res.status(200).send({

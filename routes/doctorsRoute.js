@@ -5,7 +5,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const Appointment = require("../models/appointmentModel");
 const User = require("../models/userModel");
 
-router.post("/get-doctor-info-by-user-id", authMiddleware, async (req, res) => {
+router.post("/obtain-docinfo-with-userid", authMiddleware, async (req, res) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.body.userId });
     res.status(200).send({

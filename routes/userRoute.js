@@ -24,12 +24,14 @@ router.post("/register", async (req, res) => {
     await newuser.save();
     res
       .status(200)
-      .send({ message: "User created successfully", success: true });
+      .send({ message: "The user has been generated :)", success: true });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send({ message: "Error creating user", success: false, error });
+    res.status(500).send({
+      message: "The user has not been generated :(",
+      success: false,
+      error,
+    });
   }
 });
 
@@ -37,33 +39,37 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res
-        .status(200)
-        .send({ message: "User does not exist", success: false });
+      return res.status(200).send({
+        message: "Sadly, the user is not in this world :(",
+        success: false,
+      });
     }
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
-      return res
-        .status(200)
-        .send({ message: "Password is incorrect", success: false });
+      return res.status(200).send({
+        message: "Sorry, the password is not correct :(",
+        success: false,
+      });
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
-      res
-        .status(200)
-        .send({ message: "Login successful", success: true, data: token });
+      res.status(200).send({
+        message: "Yayy! Successfully logged in :)",
+        success: true,
+        data: token,
+      });
     }
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .send({ message: "Error logging in", success: false, error });
+      .send({ message: "Nayy! Error in Loggin in :(", success: false, error });
   }
 });
 
-//here, whenever the API endpoint is /get-user-info-by-id , is called, authMiddleware will execute, if the token is valid, then it will call the next method which is the async function below.
-router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
+//here, whenever the API endpoint is /get-usersinformation-byid , is called, authMiddleware will execute, if the token is valid, then it will call the next method which is the async function below.
+router.post("/get-usersinformation-byid", authMiddleware, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.userId });
     user.password = undefined;
@@ -84,7 +90,7 @@ router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/apply-doctor-account", authMiddleware, async (req, res) => {
+router.post("/obtain-status-doc-acc", authMiddleware, async (req, res) => {
   try {
     const newdoctor = new Doctor({ ...req.body, status: "pending" });
     await newdoctor.save();
@@ -93,7 +99,7 @@ router.post("/apply-doctor-account", authMiddleware, async (req, res) => {
     const unseenNotifications = adminUser.unseenNotifications;
     unseenNotifications.push({
       type: "new-doctor-request",
-      message: `${newdoctor.firstName} ${newdoctor.lastName} has applied for a doctor account`,
+      message: `${newdoctor.firstName} ${newdoctor.lastName} wants a doctor status for his account`,
       data: {
         doctorId: newdoctor._id,
         name: newdoctor.firstName + " " + newdoctor.lastName,
@@ -103,47 +109,43 @@ router.post("/apply-doctor-account", authMiddleware, async (req, res) => {
     await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
     res.status(200).send({
       success: true,
-      message: "Doctor account applied successfully",
+      message: "Yayy! Generated query for doctor status :(",
     });
   } catch (error) {
     // console.log(error);
     res.status(500).send({
-      message: "Error applying doctor account",
+      message: "Nahh! Error in generating query for doctor status :(",
       success: false,
       error,
     });
   }
 });
-router.post(
-  "/mark-all-notifications-as-seen",
-  authMiddleware,
-  async (req, res) => {
-    try {
-      const user = await User.findOne({ _id: req.body.userId });
-      const unseenNotifications = user.unseenNotifications;
-      const seenNotifications = user.seenNotifications;
-      seenNotifications.push(...unseenNotifications);
-      user.unseenNotifications = [];
-      user.seenNotifications = seenNotifications;
-      const updatedUser = await user.save();
-      updatedUser.password = undefined;
-      res.status(200).send({
-        success: true,
-        message: "All notifications marked as seen",
-        data: updatedUser,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: "Error applying doctor account",
-        success: false,
-        error,
-      });
-    }
+router.post("/flag-notif-seen", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    const unseenNotifications = user.unseenNotifications;
+    const seenNotifications = user.seenNotifications;
+    seenNotifications.push(...unseenNotifications);
+    user.unseenNotifications = [];
+    user.seenNotifications = seenNotifications;
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "Seen all notifications",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Nahh! Not Successfull :(",
+      success: false,
+      error,
+    });
   }
-);
+});
 
-router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
+router.post("/del-notif", authMiddleware, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.userId });
     user.seenNotifications = [];
@@ -152,24 +154,24 @@ router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
     updatedUser.password = undefined;
     res.status(200).send({
       success: true,
-      message: "All notifications cleared",
+      message: "Notifs deleted",
       data: updatedUser,
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error applying doctor account",
+      message: "Nahh! Not Successfull :(",
       success: false,
       error,
     });
   }
 });
 
-router.get("/get-all-approved-doctors", authMiddleware, async (req, res) => {
+router.get("/get-accepted-drs", authMiddleware, async (req, res) => {
   try {
     const doctors = await Doctor.find({ status: "approved" });
     res.status(200).send({
-      message: "Doctors fetched successfully",
+      message: "Doctors arrived at your doorstep",
       success: true,
       data: doctors,
     });
@@ -205,7 +207,7 @@ router.post("/book-appointment", authMiddleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error booking appointment",
+      message: "Nahh! Not Successfull :(",
       success: false,
       error,
     });
@@ -227,19 +229,19 @@ router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
     });
     if (appointments.length > 0) {
       return res.status(200).send({
-        message: "Appointments not available",
+        message: "No slots available",
         success: false,
       });
     } else {
       return res.status(200).send({
-        message: "Appointments available",
+        message: "Slots available",
         success: true,
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error booking appointment",
+      message: "Not booked :(",
       success: false,
       error,
     });
