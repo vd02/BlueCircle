@@ -1,4 +1,3 @@
-# BlueCircle
 <h1 align="center">
 🌐 Blue Circle Medi Services: Healthify @SNiOE
 </h1>
@@ -66,37 +65,3 @@ $ npm i       // npm install packages
 $ npm run dev // run it locally
 $ npm run build // this will build the server code to es5 js codes and generate a dist file
 ```
-
-
-# Dependencies(tech-stacks)
-Client Side:
-"@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-regular-svg-icons": "^6.2.0",
-    "@fortawesome/free-solid-svg-icons": "^6.2.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@reduxjs/toolkit": "^1.8.6",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.23.5",
-    "axios": "^1.1.2",
-    "moment": "^2.29.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.4.0",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1",
-    "react-tooltip": "^4.4.3",
-    "redux": "^4.2.0",
-    "redux-toolkit": "^1.1.2",
-    "web-vitals": "^2.1.4"
-Server Side: 
-"bcrypt": "^5.1.0",
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.4",
-    "mongoose": "^6.6.5",
-    "nodemon": "^2.0.20"
