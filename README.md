@@ -69,8 +69,7 @@ $ npm run build // this will build the server code to es5 js codes and generate 
 
 
 # Dependencies(tech-stacks)
-Client-side | Server-side
---- | ---
+Client Side:
 "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
@@ -92,3 +91,12 @@ Client-side | Server-side
     "redux": "^4.2.0",
     "redux-toolkit": "^1.1.2",
     "web-vitals": "^2.1.4"
+Server Side: 
+"bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "mongoose": "^6.6.5",
+    "nodemon": "^2.0.20"
