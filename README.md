@@ -7,7 +7,7 @@ Mern Stack Application
 
 ## clone or download
 ```terminal
-$ git clone https://github.com/amazingandyyy/mern.git
+$ git clone https://github.com/vd02/BlueCircle
 $ yarn # or npm i
 ```
 
